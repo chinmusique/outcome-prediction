@@ -1,6 +1,6 @@
-#Harvard CaseLaw sample dataset#
+# Harvard CaseLaw sample dataset #
 
-##Overview##
+## Overview ##
 This dataset consists of 500 legal cases from the [New Mexico court of appeals](https://case.law/download/bulk_exports/latest/by_jurisdiction/case_text_open/nm/). 
 Each case appeals some previous court ruling, e.g., a district court or another court of appeals. 
 Therefore, the possible outcomes of each case:
@@ -21,3 +21,17 @@ in some cases conclusion is followed by an additional section, sort of an Append
 
 Each section may or may not have a header (Facts/Background/Discussion/Conclusion). The one consistent marker that can be used is that conclusion, and therefore the main part of the case, ends with a phrase IT IS SO ORDERED. 
 Most importantly, the sections do not clearly distinguish between facts and legal reasoning. The judges switch back and forth between restating the facts and performing legal reasoning, and some sentences may contain both facts and reasoning. How to fully annotate a legal case like that on the sentence level is a problem of its own.
+
+## The Dataset ##
+Annotated cases are stored in json format, one file per case. Each file contains the full text of the case, and 2 types of annotations:
+__1. document-level annotation__
+Each case is assigned one of the 4 above categories; the distribution of classes is
+AFFIRM: 240, REVERSE: 159, MIXED: 101.
+
+Those cases that affirm in part and reverse in part, as well as cases that address only some of the points of the appeal while ignoring the rest are assigned the label MIXED.
+Some cases are repeated appeals, i.e., they are appealing the decision of the previous appeal. Sometimes they will explicitly state both previous decisions, e.g., *we affirm the district court decision and reverse the court of appeals*. In such cases taken as label is the decision with regards to the most recent ruling, e.g., REVERSE.
+Some cases come to an unambiguous affirm/reverse decision, but after the outcome is announced, one or more judges explain in which way they personally disagree with the ruling (*they dissent*). For example, the court affirms on all accounts, but one judge says he would partially reverse. SUch dissenting opinions are ingnored, and only the overall decision is annotated (in this example AFFIRM).
+
+
+__2. sentence-level annotation__
+Sentences that actually contain the decisions to affirm/reverse/dismiss are annotated with the OUTCOME label (*Accordingly, we affirm.*). Such sentences usually appear at the beginning of the case (in a sort of a summary) and in the Conclusion section; sometimes the overall decision or parts of the decision also appear in the body of the case; I annotated all such sentences. 
